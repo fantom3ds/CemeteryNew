@@ -1,0 +1,33 @@
+﻿@model CemeteryNew.Models.Deceased
+
+@{
+    ViewBag.Title = "AddDeceased";
+}
+
+<h2>Добавить новое захоронение</h2>
+
+<p>
+    Если не уверены в каких-либо данных - оставьте поля пустыми. Поля фамилии, имени и отчества - обязательные для заполнения
+</p>
+
+<div class="EditForm">
+    @using (Html.BeginForm("AddDeceased", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input name="LastName" placeholder="Укажите Фамилию" class="textbox" type="text" required />
+        <input name="firstName" placeholder="Укажите имя" class="textbox" type="text" required />
+        <input name="Parcicle" placeholder="Укажите Отчество" class="textbox" type="text" required />
+        <input name="DateBirth" placeholder="Укажите Дату рождения" class="textbox" type="date" />
+        <input name="DateDead" placeholder="Укажите Дату смерти" class="textbox" type="date" />
+        <input name="NumUch" placeholder="Укажите Номер участка" class="textbox" type="number"/>
+        <input name="NumMog" placeholder="Укажите Номер могилы" class="textbox" type="number"/>
+        <input name="Opis" placeholder="Укажите Описание" class="textbox" />
+        <input name="category" placeholder="Укажите Категорию" class="textbox" type="text" />
+        <br />
+        <input type="file" name="upload" /><br>
+        <input class="button" type="submit" value="Добавить" />
+    }
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

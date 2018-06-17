@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CemeteryNew.Models.Deceased>
+
+<div class="AddBurial">
+    @Html.ActionLink("Добавить захоронение", "AddDeceased", "Home")
+</div>
+
+
+
+<table class="table">
+    <tr>
+        <th>Фотография</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Дата рождения</th>
+        <th>Дата смерти</th>
+        <th>Номер участка</th>
+        <th>Номер могилы</th>
+        <th>Описание</th>
+        <th>Категория</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@item.Photo" target="_blank">
+                    <img class="DeceasedPhoto" src="@item.Photo" />
+                </a>
+            </td>
+            <td> @Html.DisplayFor(modelItem => item.LName)</td>
+            <td> @Html.DisplayFor(modelItem => item.FName)</td>
+            <td> @Html.DisplayFor(modelItem => item.SName)</td>
+            <td> @Html.DisplayFor(modelItem => item.DOB)</td>
+            <td> @Html.DisplayFor(modelItem => item.DateDeath)</td>
+            @if (item.BurialPlace != null)
+            {
+                <td>@item.BurialPlace.NArea</td>
+                <td>@item.BurialPlace.NBurial</td>
+            }
+            else
+            {
+                <td>Нет данных</td>
+                <td>Нет данных</td>
+            }
+            <td>@item.Description</td>
+            @if (item.Categories != null)
+            {
+                <td>
+                    @foreach (var item2 in item.Categories)
+                    {
+                        <p>@item2.CategoryName</p>;
+                    }
+                </td>
+            }
+            else
+            {
+                <td>Нет данных</td>
+            }
+            <td>
+                <input class="Table-button" type="button" value="Подтвердить" onclick="location.href='@Url.Action("ConfirmBurial", "Admin",new { Id=item.Id })'" />
+                <br />
+                <input class="Table-button" type="button" value="Редактировать" onclick="location.href='@Url.Action("EditBurial", "Admin",new { Id=item.Id })'" />
+                <br />
+                <input class="Table-button" type="button" value="Удалить" onclick="location.href='@Url.Action("DeleteBurial", "Admin",new { Id=item.Id })'" />
+            </td>
+        </tr>
+    }
+</table>

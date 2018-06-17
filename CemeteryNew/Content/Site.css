@@ -1,0 +1,372 @@
+﻿/*-----------Общие стили---------------------*/
+
+body {
+    height: 100%;
+    width: 100%;
+    font-family: 'Albertus Bold';
+}
+
+ul {
+    list-style-type: none;
+}
+
+
+/*------------------------------Fonts-----------------------------------*/
+
+@font-face {
+    src: url("Fonts/FontMain.otf");
+    font-family: 'Albertus Bold';
+}
+
+@font-face {
+    src: url("Fonts/FontButton.ttf");
+    font-family: FontButton;
+}
+
+
+/*---------------------------------Header----------------------------------------*/
+.CemeteryHeader {
+    background-color: #FAFAD2;
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 150px;
+    opacity: 1;
+    border-radius: 3px;
+    z-index: 100;
+}
+
+
+.CemeteryHeader-item {
+    text-wrap: normal;
+}
+
+.CemeteryHeader > img {
+    float: left;
+    margin: 10px;
+}
+
+.CemeteryHeader > h2 {
+    text-align: center;
+}
+
+
+/*--------------------------------Менюшка-------------------------*/
+.CemeteryNavbar {
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    left: 0;
+    top: 150px;
+    background-color: #A6CADB;
+}
+
+    .CemeteryNavbar > nav {
+        margin-top: 10px;
+    }
+
+        .CemeteryNavbar > nav > a {
+            margin-right: 50px;
+            font-size: 22px;
+            text-decoration: none;
+            font-family:FontButton;
+            padding:3px;
+        }
+
+            .CemeteryNavbar > nav > a:first-child {
+                margin-left: 50px;
+            }
+
+            .CemeteryNavbar > nav > a:hover {
+                box-shadow: 5px 5px;
+                transition: .5s ease-in-out;
+                border-bottom: 2px solid black;
+            }
+
+
+
+
+
+
+/*-------------------------------Тело---------------------------------*/
+
+.CemeteryBody {
+    margin-top: 200px;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+
+
+
+.Auth-Reg-panel {
+    font-size: 20px;
+    width: 300px;
+    position: fixed;
+    left: 10px;
+    top: auto;
+    z-index: 999999;
+}
+
+.UserLink {
+    font-size: 20px;
+    width: 300px;
+    position: fixed;
+    left: 10px;
+    top: auto;
+    z-index: 999999;
+}
+
+
+.UserSubmenu {
+    display: none;
+    height: auto;
+    width: auto;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+    .UserLinkMenu:focus ~ .UserSubmenu,
+    .UserLinkMenu:active ~ .UserSubmenu,
+    .UserSubmenu:hover {
+        display: block;
+        text-align: left;
+        list-style-type: none;
+        /*background-color: #4A76A8;*/
+    }
+
+.UserSubMenuBtn {
+    background-color: #A6CADB;
+    margin: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+    .UserSubMenuBtn:hover {
+        background-color: red;
+    }
+
+.main-item:focus ~ .sub-menu,
+.main-item:active ~ .sub-menu,
+.sub-menu:hover {
+    display: inline-block;
+}
+
+
+/*====================Index==============================*/
+
+.Samples-Burials {
+    width: 70%;
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    font-size: 20px;
+}
+
+.PhotoGalery {
+    width: 25%;
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+
+    .PhotoGalery > img {
+        margin-bottom: 30px;
+        width: 100%;
+        height: 100%;
+    }
+
+.Burial {
+    margin-bottom: 100px;
+}
+
+    .Burial > img {
+        width: 40%;
+        height: 40%;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+.BurialDescript {
+    display: inline-block;
+    text-wrap: normal;
+    width: 50%;
+    vertical-align: top;
+}
+
+.BurialPhoto {
+    width: 300px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.BurialPhotoHead {
+    width: 40%;
+}
+
+/*--------------------------Search----------------------------------*/
+
+.AddBurial {
+    font-size: 20px;
+    border: 1px solid black;
+    padding: 15px;
+}
+
+    .AddBurial > a {
+        text-decoration: none;
+        margin-left: 50px;
+        border: 1px solid black;
+        padding: 5px;
+    }
+
+        .AddBurial > a:first-child {
+            margin-left: 10px;
+        }
+
+        .AddBurial > a:hover {
+            background-color: aqua;
+        }
+
+.DeceasedPhoto {
+    width: 150px; /* you can use % */
+    height: auto;
+}
+
+table {
+    border-spacing: 0 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 50px;
+    width: 100%;
+}
+
+th {
+    padding: 10px 20px;
+    background: #56433D;
+    color: #F9C941;
+    border-right: 2px solid;
+    font-size: 0.9em;
+}
+
+    th:first-child {
+        text-align: left;
+    }
+
+    th:last-child {
+        border-right: none;
+    }
+
+td {
+    vertical-align: middle;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    border-top: 2px solid #56433D;
+    border-bottom: 2px solid #56433D;
+    border-right: 2px solid #56433D;
+    width: auto;
+}
+
+    td:first-child {
+        border-left: 2px solid #56433D;
+        border-right: none;
+    }
+
+    td:nth-child(2) {
+        text-align: left;
+    }
+
+.Table-button {
+    font-size: 30px;
+    margin: 5px;
+    width: 100%;
+}
+
+.SearchForm > .textbox{
+    display:inline-block;
+}
+
+/*------------------------------Add/Edit--------------------------------------*/
+
+.EditForm {
+    margin-left: 20px;
+    font-size:20px;
+}
+
+input {
+    font-size: 20px;
+}
+
+.textbox {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.button {
+    font-size: 20px;
+    margin: 20px;
+}
+
+.button:hover{
+    background-color:aqua;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group-Name {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+
+
+.dl-horizontal dt {
+    float: left;
+    clear: left;
+    overflow: hidden;
+    width: 140px;
+    text-align: left;
+    white-space: normal;
+    line-height: 1.25;
+    margin-bottom:10px;
+}
+
+    .dl-horizontal dt, .description .dl-horizontal dt span {
+        font-weight: 400;
+        color: #818690;
+    }
+
+.dl-horizontal dd {
+    margin-left: 150px;
+    margin-bottom: 6px;
+    line-height: 1.25;
+    margin-bottom: 10px;
+}
+
+.dl-horizontal dt span {
+    padding: 0 5px 0 0;
+    line-height: 1.25;
+    background: #ffffff;
+}
+
+
+
+
+/*------------------------------Map-------------------------------------*/
+.MapBody {
+    margin: 10%;
+    margin-top: 50px;
+}
+
+
+
+

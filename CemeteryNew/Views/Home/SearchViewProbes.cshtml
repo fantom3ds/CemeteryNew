@@ -1,0 +1,94 @@
+﻿@model CemeteryNew.Models.ViewModels.SearchModel
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Поиск захоронений</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="AddBurial">
+        @Html.ActionLink("Добавить захоронение", "AddDeceased")
+        @if (User.IsInRole("admin"))
+        {
+            @Html.ActionLink("Подтвердить захоронение", "UnknownBurials", "Admin")
+        }
+    </div>
+}
+
+
+<div>
+    @using (Html.BeginForm("AddDeceased", "Home", FormMethod.Post, new { enctype = "SearchForm" }))
+    {
+        <input name="LastName" placeholder="Укажите Фамилию" class="textbox" type="text" required />
+        <input name="firstName" placeholder="Укажите имя" class="textbox" type="text" required />
+        <input name="Parcicle" placeholder="Укажите Отчество" class="textbox" type="text" required />
+        <input name="DateBirth" placeholder="Укажите Дату рождения" class="textbox" type="date" />
+        <input name="DateDead" placeholder="Укажите Дату смерти" class="textbox" type="date" />
+
+        @*<input name="NumUch" placeholder="Укажите Номер участка" class="textbox" type="number" />
+            <input name="NumMog" placeholder="Укажите Номер могилы" class="textbox" type="number" />*@
+
+        <input name="category" placeholder="Укажите Категорию" class="textbox" type="text" />
+        <br />
+        <input type="file" name="upload" /><br>
+        <input class="button" type="submit" value="Добавить" />
+    }
+</div>
+
+
+
+<table class="table">
+    <tr>
+        <th>Фотография</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Дата рождения</th>
+        <th>Дата смерти</th>
+        <th>Номер участка</th>
+        <th>Номер могилы</th>
+        <th>Описание</th>
+        <th>Категория</th>
+    </tr>
+    @foreach (var item in Model.Deceaseds)
+    {
+        <tr>
+            <td>
+                <a href="@item.Photo" target="_blank">
+                    <img class="DeceasedPhoto" src="@item.Photo" />
+                </a>
+            </td>
+            <td> @Html.DisplayFor(modelItem => item.LName)</td>
+            <td> @Html.DisplayFor(modelItem => item.FName)</td>
+            <td> @Html.DisplayFor(modelItem => item.SName)</td>
+            <td> @Html.DisplayFor(modelItem => item.DOB)</td>
+            <td> @Html.DisplayFor(modelItem => item.DateDeath)</td>
+            @if (item.BurialPlace != null)
+            {
+                <td>@item.BurialPlace.NArea</td>
+                <td>@item.BurialPlace.NBurial</td>
+            }
+            else
+            {
+                <td>Нет данных</td>
+                <td>Нет данных</td>
+            }
+            <td>@item.Description</td>
+            @if (item.Categories != null)
+            {
+                <td>
+                    @foreach (var item2 in item.Categories)
+                    {
+                        <p>@item2.CategoryName</p>;
+                    }
+                </td>
+            }
+            else
+            {
+                <td>Нет данных</td>
+            }
+        </tr>
+    }
+</table>

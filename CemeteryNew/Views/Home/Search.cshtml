@@ -1,0 +1,80 @@
+﻿@model CemeteryNew.Models.ViewModels.SearchModel
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+<div>
+    @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { enctype = "SearchForm" }))
+    {
+        <input name="LName" placeholder="Укажите Фамилию" class="textbox" type="text" value="@Model.Form.LName"/>
+        <input name="FName" placeholder="Укажите имя" class="textbox" type="text"/>
+        <input name="SName" placeholder="Укажите Отчество" class="textbox" type="text"/>
+        <input name="DOB" placeholder="Укажите Дату рождения" class="textbox" type="date" />
+        <input name="DateDeath" placeholder="Укажите Дату смерти" class="textbox" type="date" />
+
+        @*<input name="NumUch" placeholder="Укажите Номер участка" class="textbox" type="number" />
+            <input name="NumMog" placeholder="Укажите Номер могилы" class="textbox" type="number" />*@
+
+        <input name="Category" placeholder="Укажите Категорию" class="textbox" type="text" />
+        <br />
+        <input class="button" type="submit" value="Найти!" />
+    }
+</div>
+
+
+
+<table class="table">
+    <tr>
+        <th>Фотография</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Дата рождения</th>
+        <th>Дата смерти</th>
+        <th>Номер участка</th>
+        <th>Номер могилы</th>
+        <th>Описание</th>
+        <th>Категория</th>
+    </tr>
+    @foreach (var item in Model.Deceaseds)
+    {
+        <tr>
+            <td>
+                <a href="@item.Photo" target="_blank">
+                    <img class="DeceasedPhoto" src="@item.Photo" />
+                </a>
+            </td>
+            <td> @Html.DisplayFor(modelItem => item.LName)</td>
+            <td> @Html.DisplayFor(modelItem => item.FName)</td>
+            <td> @Html.DisplayFor(modelItem => item.SName)</td>
+            <td> @Html.DisplayFor(modelItem => item.DOB)</td>
+            <td> @Html.DisplayFor(modelItem => item.DateDeath)</td>
+            @if (item.BurialPlace != null)
+            {
+                <td>@item.BurialPlace.NArea</td>
+                <td>@item.BurialPlace.NBurial</td>
+            }
+            else
+            {
+                <td>Нет данных</td>
+                <td>Нет данных</td>
+            }
+            <td>@item.Description</td>
+            @if (item.Categories != null)
+            {
+                <td>
+                    @foreach (var item2 in item.Categories)
+                    {
+                        <p>@item2.CategoryName</p>;
+                    }
+                </td>
+            }
+            else
+            {
+                <td>Нет данных</td>
+            }
+        </tr>
+    }
+</table>

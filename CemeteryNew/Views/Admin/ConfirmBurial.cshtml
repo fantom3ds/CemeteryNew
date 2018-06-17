@@ -1,0 +1,48 @@
+﻿@model CemeteryNew.Models.ViewModels.DeceasedModel
+
+<h2>Вы уверены, что хотите подтвердить данные этого захоронения? </h2>
+<div>
+
+
+    <img src="@Model.Photo" />
+
+    <h2>@Model.LName @Model.FName @Model.SName (@Html.DisplayFor(modelItem => Model.DOB) - @Html.DisplayFor(modelItem => Model.DateDeath))</h2>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NArea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NArea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NBur)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NBur)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input class="button" type="submit" value="Подтвердить" class="btn btn-default" />
+            <input class="button" type="button" value="Редактировать" onclick="location.href='@Url.Action("EditBurial", "Admin",new { Id=Model.Id })'" />
+            <input class="button" type="button" value="Отменить" onclick="location.href='@Url.Action("UnknownBurials", "Admin")'" />
+        </div>
+    }
+</div>
