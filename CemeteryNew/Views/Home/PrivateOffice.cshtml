@@ -1,0 +1,30 @@
+﻿@model CemeteryNew.Models.User
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Login)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Login)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Role.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Role.Name) (Id роли: @Html.DisplayFor(model => model.RoleId))
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <input class="Table-button" type="button" value="Сменить пароль" onclick="location.href='@Url.Action("EditUser", "Home",new { Id=Model.Id })'" />
+    <br />
+    <input class="Table-button" type="button" value="На главную" onclick="location.href='@Url.Action("Index", "Home")'" />
+    <br />
+</p>

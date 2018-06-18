@@ -37,7 +37,7 @@ namespace CemeteryNew.Models
         public DateTime? DateDeath { get; set; }
 
         [Display(Name ="Категории")]
-        public List<Category> Categories { get; set; }
+        public virtual List<Category> Categories { get; set; }
 
         [ForeignKey("BurialPlace")]
         public int? BurialPlaseId { get; set; }

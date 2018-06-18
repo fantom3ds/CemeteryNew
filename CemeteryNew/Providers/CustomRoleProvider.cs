@@ -1,4 +1,5 @@
-﻿using CemeteryNew.Models;
+﻿using CemeteryNew.DataAccessLayer;
+using CemeteryNew.Models;
 using System;
 using System.Linq;
 using System.Web.Security;
@@ -7,32 +8,16 @@ namespace CemeteryNew.Providers
 {
     public class CustomRoleProvider : RoleProvider
     {
+        UserDao Dao = new UserDao();
+
         public override string[] GetRolesForUser(string username)
         {
-            string[] roles = new string[] { };
-            using (DataContext db = new DataContext())
-            {
-                string roleName = db.Users.Where(u => u.Login == username).Select(u => u.Role.Name).FirstOrDefault();
-                if (roleName != "")
-                {
-                    // получаем роль
-                    roles = new string[] { roleName };
-                }
-                return roles;
-            }
+            return Dao.GetRolesForUser(username);
         }
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            using (DataContext db = new DataContext())
-            {
-                // Получаем пользователя
-                string roleName1 = db.Users.Where(u => u.Login == username).Select(u => u.Role.Name).FirstOrDefault();
-                if (roleName1 == roleName)
-                    return true;
-                else
-                    return false;
-            }
+            return Dao.IsUserInRole(username, roleName);
         }
 
         #region NotImplemented
@@ -77,7 +62,7 @@ namespace CemeteryNew.Providers
         public override bool RoleExists(string roleName)
         {
             throw new NotImplementedException();
-        } 
+        }
 
         #endregion
     }

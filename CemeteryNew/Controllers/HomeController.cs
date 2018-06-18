@@ -6,12 +6,16 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using CemeteryNew.Models;
 using CemeteryNew.Models.ViewModels;
+using System.Threading.Tasks;
+using CemeteryNew.DataAccessLayer;
 
 namespace CemeteryNew.Controllers
 {
     public class HomeController : Controller
     {
         string fileName; // переменная путь файла
+        DeceasedDao deceasedDAO = new DeceasedDao();
+        UserDao userDao = new UserDao();
 
         public ActionResult Index()
         {
@@ -33,36 +37,78 @@ namespace CemeteryNew.Controllers
             return View();
         }//Страница статьи
 
-
-
-        public ActionResult Search(List<Deceased> deceaseds)
+        public ActionResult History()
         {
-            SearchModel search = new SearchModel();
-            using (DataContext DB = new DataContext())
+            return View();
+        }
+
+
+        #region Search (бэкап)
+
+        //public ActionResult Search(List<Deceased> deceaseds)
+        //{
+        //    SearchModel search = new SearchModel();
+        //    using (DataContext DB = new DataContext())
+        //    {
+        //        search.Deceaseds = new List<Deceased>(DB.Deceaseds.Where(c => c.Confirmed == true).Include(c => c.Categories).Include(a => a.BurialPlace));
+        //    }
+        //    return View(search);
+        //}
+
+        #endregion
+
+        public async Task<ActionResult> Search(string searchString)
+        {
+            var deceaseds = deceasedDAO.GetAllDeceased();
+            if (!String.IsNullOrEmpty(searchString))
             {
-                search.Deceaseds = new List<Deceased>(DB.Deceaseds.Where(c => c.Confirmed == true).Include(c => c.Categories).Include(a => a.BurialPlace));
+                deceaseds = deceaseds.Where(s => s.LName.Contains(searchString) || s.FName.Contains(searchString) || s.SName.Contains(searchString));
             }
-            return View(search);
+            return View(await deceaseds.ToListAsync());
         }
 
 
 
-        
-
-        public ActionResult History()
+        public ActionResult PrivateOffice()
         {
-            return View();
-        }//Страница истории 
+            User principal = userDao.GetUser(User.Identity.Name, true);
+            if (principal == null)
+                return
+                    new HttpNotFoundResult("Ошибка входа в личный кабинет, перелогиньтесь и попробуйте снова");
+            return View(principal);
+        }
+
+        public ActionResult EditUser(int Id)
+        {
+            User principal = userDao.GetUser(Id);
+            if (principal == null)
+                return
+                    new HttpNotFoundResult("Ошибка входа в личный кабинет, перелогиньтесь и попробуйте снова");
+            EditUser a = new EditUser { Id = principal.Id };
+            return View(a);
+        }
+
+        [HttpPost]
+        [ActionName("EditUser")]
+        public ActionResult EditedUser(EditUser edit)
+        {
+            User principal = userDao.GetUser(edit.Id);
+            if (principal == null)
+                return
+                    new HttpNotFoundResult("Пользователь не найден, перелогиньтесь и попробуйте снова");
+
+            principal.Password = EncoderGuid.PasswordToGuid.Get(edit.Password);
+            userDao.EditUser(principal);
+            return RedirectToAction("PrivateOffice","Home");
+        }
+
+        #region Добавление захоронения (неподтвержденного)
 
         [Authorize]
         public ActionResult AddDeceased()
         {
             return View();
         }
-
-
-        #region Добавление захоронения (неподтвержденного)
-
 
         [HttpPost]//Принимаюший метод
         public ActionResult AddDeceased(string LastName, string FirstName, string Parcicle, DateTime? DateBirth, DateTime? DateDead, int? NumUch, int? NumMog, string opis, string category, HttpPostedFileBase upload)
@@ -78,40 +124,37 @@ namespace CemeteryNew.Controllers
                 fileName = "notphoto.jpg";// Если файл отсутсвует, загрузить картинку, нет фото.
             }
 
-            using (DataContext DB = new DataContext())
+            if (NumMog == null)
+                NumMog = 0;
+            if (NumUch == null)
+                NumUch = 0;
+            //Ищем могилу в базе,если существует - пусть будет она. Если нет - копаем
+            var burplace = deceasedDAO.GetBurial((int)NumUch, (int)NumMog);
+            if (burplace == null)
+                burplace = new BurialPlace { NArea = (int)NumUch, NBurial = (int)NumMog };
+
+            Category categ = deceasedDAO.GetCategory(category);
+
+            Deceased man = new Deceased // Объявляем класс
             {
-                if (NumMog == null)
-                    NumMog = 0;
-                if (NumUch == null)
-                    NumUch = 0;
-                //Ищем могилу в базе,если существует - пусть будет она. Если нет - копаем
-                var burplace = DB.BurialPlaces.FirstOrDefault(x => x.NArea == NumUch && x.NBurial == NumMog);
-                if (burplace == null)
-                    burplace = new BurialPlace { NArea = (int)NumUch, NBurial = (int)NumMog };
+                FName = FirstName,
+                LName = LastName,
+                SName = Parcicle,
 
-                Category categ = DB.Categories.FirstOrDefault(d => d.CategoryName == category);
+                DOB = DateBirth,
+                DateDeath = DateDead,
+                // Присобачил метод проверки: если место существует - то хороним
+                // там, или же создаем новое.
+                BurialPlace = burplace,
+                Description = opis,
+                //Надо присобачить выбор из раскрывающегося списка
+                Categories = new List<Category>(),
+                Photo = "/Content/Images/Photos/" + fileName
+            };
+            if (categ != null)
+                man.Categories.Add(categ);
 
-                Deceased man = new Deceased // Объявляем класс
-                {
-                    FName = FirstName,
-                    LName = LastName,
-                    SName = Parcicle,
-
-                    DOB = DateBirth,
-                    DateDeath = DateDead,
-                    // Присобачил метод проверки: если место существует - то хороним
-                    // там, или же создаем новое.
-                    BurialPlace = burplace,
-                    Description = opis,
-                    //Надо присобачить выбор из раскрывающегося списка
-                    Categories = new List<Category>(),
-                    Photo = "/Content/Images/Photos/" + fileName
-                };
-                if (categ != null)
-                    man.Categories.Add(categ);
-                DB.Deceaseds.Add(man);//Запись в бд
-                DB.SaveChanges();//Сохранение
-            }
+            deceasedDAO.AddDeceased(man);
             return RedirectToAction("Search");//Возврат на страницу
         }
 

@@ -17,14 +17,13 @@
             <h2>"Воскресенское кладбище" г. Саратова</h2>
             <a href="https://ru.wikipedia.org/wiki/%D0%92%D0%BE%D1%81%D0%BA%D1%80%D0%B5%D1%81%D0%B5%D0%BD%D1%81%D0%BA%D0%BE%D0%B5_%D0%BA%D0%BB%D0%B0%D0%B4%D0%B1%D0%B8%D1%89%D0%B5_(%D0%A1%D0%B0%D1%80%D0%B0%D1%82%D0%BE%D0%B2)">Воскресенское кладбище (Саратовский некрополь) возникло более 150 лет назад, в 1836 году. Возникновение его было связано с трагическими событиями в Саратове, когда город охватила страшнейшая эпидемия холеры, унесшая тысячи жизней. Каждый день умирало около 300 человек.</a>
         </p>
-
         @if (User.Identity.IsAuthenticated)
         {
             <div class="UserLink">
                 Здравствуйте,
                 <a class="UserLinkMenu" href="javascript:void(0);" tabindex="1">@User.Identity.Name</a>
                 <div class="UserSubmenu">
-                    @*<div class="UserSubMenuBtn">@Html.ActionLink("Личный кабинет", "PrivateOffice", "Home")</div>*@
+                    <div class="UserSubMenuBtn">@Html.ActionLink("Личный кабинет", "PrivateOffice", "Home")</div>
                     <div class="UserSubMenuBtn">@Html.ActionLink("Выход", "Logout", "Account")</div>
                 </div>
             </div>
@@ -36,10 +35,7 @@
                 @Html.ActionLink("Регистрация", "Register", "Account", null, new { @class = "AccLink" })
             </div>
         }
-
     </div>
-
-
 
 
     <div class="CemeteryNavbar">
@@ -52,12 +48,6 @@
             <a href="/Home/History">История</a>
         </nav>
     </div>
-
-
-
-
-
-
 
 
 

@@ -110,33 +110,22 @@
     <Content Include="Content\Images\Galary\3.jpg" />
     <Content Include="Content\Images\Galary\4.jpg" />
     <Content Include="Content\Images\Galary\5.jpg" />
-    <Content Include="Content\Images\Icons\12.png" />
-    <Content Include="Content\Images\Icons\dart.jpg" />
+    <Content Include="Content\Images\History\Воскресенская кладбищенская церковь.jpg" />
+    <Content Include="Content\Images\History\День памяти жертв репрессий.jpg" />
+    <Content Include="Content\Images\History\Могила Чернышевского.jpg" />
+    <Content Include="Content\Images\History\Открытие памятника Вавилову.jpg" />
+    <Content Include="Content\Images\History\Умер боевой товарищ.jpg" />
+    <Content Include="Content\Images\History\Участок воскресенского кладбища.jpg" />
     <Content Include="Content\Images\Icons\Main.png" />
-    <Content Include="Content\Images\Icons\freebie-hr.png" />
-    <Content Include="Content\Images\Icons\freebie.png" />
-    <Content Include="Content\Images\Icons\gallery-hr.png" />
-    <Content Include="Content\Images\Icons\gallery.png" />
-    <Content Include="Content\Images\Icons\play-hr.png" />
-    <Content Include="Content\Images\Icons\play.png" />
     <Content Include="Content\Images\Icons\search.png" />
     <Content Include="Content\Images\Icons\search1.png" />
-    <Content Include="Content\Images\Icons\social-more-hr.png" />
-    <Content Include="Content\Images\Icons\social-more.png" />
-    <Content Include="Content\Images\Icons\social1-hr.png" />
-    <Content Include="Content\Images\Icons\social1.png" />
-    <Content Include="Content\Images\Icons\social2-hr.png" />
-    <Content Include="Content\Images\Icons\social2.png" />
-    <Content Include="Content\Images\Icons\social3-hr.png" />
-    <Content Include="Content\Images\Icons\social3.png" />
-    <Content Include="Content\Images\Icons\social4-hr.png" />
-    <Content Include="Content\Images\Icons\social4.png" />
     <Content Include="Content\Images\Icons\url-hr.png" />
     <Content Include="Content\Images\Icons\url.png" />
     <Content Include="Content\Images\Index\1.jpg" />
     <Content Include="Content\Images\Index\2.jpg" />
     <Content Include="Content\Images\Index\3.jpg" />
     <Content Include="Content\Images\Index\4.jpg" />
+    <Content Include="Content\Images\Index\График.png" />
     <Content Include="Content\Images\Map\1.jpg" />
     <Content Include="Content\Images\Map\2.jpg" />
     <Content Include="Content\Images\Map\3.jpg" />
@@ -167,6 +156,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DataAccessLayer\DeceasedDao.cs" />
+    <Compile Include="DataAccessLayer\UserDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -186,6 +177,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\ViewModels\DeceasedModel.cs" />
+    <Compile Include="Models\ViewModels\EditUser.cs" />
     <Compile Include="Models\ViewModels\LoginModel.cs" />
     <Compile Include="Models\ViewModels\Register.cs" />
     <Compile Include="Models\ViewModels\SearchForm.cs" />
@@ -210,6 +202,8 @@
     <Content Include="Views\Admin\DeleteBurial.cshtml" />
     <Content Include="Views\Home\SearchViewProbes.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\PrivateOffice.cshtml" />
+    <Content Include="Views\Home\EditUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -225,6 +219,7 @@
       <DependentUpon>201806151856083_EditErrors.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

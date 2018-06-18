@@ -4,10 +4,15 @@ body {
     height: 100%;
     width: 100%;
     font-family: 'Albertus Bold';
+    background-color: #F2F2F2;
 }
 
 ul {
     list-style-type: none;
+}
+
+a {
+    text-decoration: none;
 }
 
 
@@ -52,56 +57,6 @@ ul {
 }
 
 
-/*--------------------------------Менюшка-------------------------*/
-.CemeteryNavbar {
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    left: 0;
-    top: 150px;
-    background-color: #A6CADB;
-}
-
-    .CemeteryNavbar > nav {
-        margin-top: 10px;
-    }
-
-        .CemeteryNavbar > nav > a {
-            margin-right: 50px;
-            font-size: 22px;
-            text-decoration: none;
-            font-family:FontButton;
-            padding:3px;
-        }
-
-            .CemeteryNavbar > nav > a:first-child {
-                margin-left: 50px;
-            }
-
-            .CemeteryNavbar > nav > a:hover {
-                box-shadow: 5px 5px;
-                transition: .5s ease-in-out;
-                border-bottom: 2px solid black;
-            }
-
-
-
-
-
-
-/*-------------------------------Тело---------------------------------*/
-
-.CemeteryBody {
-    margin-top: 200px;
-    width: 100%;
-    height: 100%;
-}
-
-
-
-
-
-
 
 .Auth-Reg-panel {
     font-size: 20px;
@@ -110,6 +65,7 @@ ul {
     left: 10px;
     top: auto;
     z-index: 999999;
+    margin-bottom: 15px;
 }
 
 .UserLink {
@@ -119,6 +75,7 @@ ul {
     left: 10px;
     top: auto;
     z-index: 999999;
+    margin-bottom: 15px;
 }
 
 
@@ -155,6 +112,60 @@ ul {
 .sub-menu:hover {
     display: inline-block;
 }
+
+
+
+
+/*--------------------------------Менюшка-------------------------*/
+.CemeteryNavbar {
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    left: 0;
+    top: 150px;
+    background-color: #A6CADB;
+}
+
+    .CemeteryNavbar > nav {
+        margin-top: 10px;
+    }
+
+        .CemeteryNavbar > nav > a {
+            margin-right: 50px;
+            font-size: 22px;
+            text-decoration: none;
+            font-family: FontButton;
+            padding: 3px;
+            padding:5px;
+            height:100%;
+        }
+
+            .CemeteryNavbar > nav > a:first-child {
+                margin-left: 50px;
+            }
+
+            .CemeteryNavbar > nav > a:hover {
+                box-shadow: 10px 5px;
+                transition: .5s ease-in-out;
+                border-bottom: 2px solid black;
+            }
+
+
+
+
+
+
+/*-------------------------------Тело---------------------------------*/
+
+.CemeteryBody {
+    margin-top: 200px;
+    width: 100%;
+    height: 100%;
+    margin-left:10px;
+}
+
+
+
 
 
 /*====================Index==============================*/
@@ -214,6 +225,7 @@ ul {
     font-size: 20px;
     border: 1px solid black;
     padding: 15px;
+    width:50%;
 }
 
     .AddBurial > a {
@@ -287,15 +299,15 @@ td {
     width: 100%;
 }
 
-.SearchForm > .textbox{
-    display:inline-block;
+.SearchForm > .textbox {
+    display: inline-block;
 }
 
 /*------------------------------Add/Edit--------------------------------------*/
 
 .EditForm {
     margin-left: 20px;
-    font-size:20px;
+    font-size: 20px;
 }
 
 input {
@@ -313,9 +325,9 @@ input {
     margin: 20px;
 }
 
-.button:hover{
-    background-color:aqua;
-}
+    .button:hover {
+        background-color: aqua;
+    }
 
 .form-group {
     margin-bottom: 20px;
@@ -337,13 +349,13 @@ input {
     text-align: left;
     white-space: normal;
     line-height: 1.25;
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
-    .dl-horizontal dt, .description .dl-horizontal dt span {
-        font-weight: 400;
-        color: #818690;
-    }
+.dl-horizontal dt, .description .dl-horizontal dt span {
+    font-weight: 400;
+    color: #818690;
+}
 
 .dl-horizontal dd {
     margin-left: 150px;
@@ -366,7 +378,3 @@ input {
     margin: 10%;
     margin-top: 50px;
 }
-
-
-
-
