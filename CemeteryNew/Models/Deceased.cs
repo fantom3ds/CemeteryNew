@@ -50,7 +50,11 @@ namespace CemeteryNew.Models
         [MaxLength(200)]
         public string Description { get; set; }
 
+        [Display(Name ="Подтвержденное захоронение")]
         public bool Confirmed { get; set; } = false;
+
+        [Display(Name ="Неизвестное захоронение")]
+        public bool UnknownBurial { get; set; }
 
     }
 }

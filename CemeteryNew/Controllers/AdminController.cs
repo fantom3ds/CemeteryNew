@@ -1,4 +1,5 @@
-﻿using CemeteryNew.Models;
+﻿using CemeteryNew.DataAccessLayer;
+using CemeteryNew.Models;
 using CemeteryNew.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,18 @@ using System.Web.Mvc;
 
 namespace CemeteryNew.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles ="admin")]
     public class AdminController : Controller
     {
+        private UserDal userDal;
+        private DeceasedDal deceasedDal;
+
+        public AdminController()
+        {
+            userDal = new UserDal();
+            deceasedDal = new DeceasedDal();
+        }
+
         public ActionResult UnknownBurials()
         {
             List<Deceased> deceaseds;
@@ -98,35 +108,28 @@ namespace CemeteryNew.Controllers
 
         #endregion
 
-        #region Подтверждение
+        #region Подтверждение/Снятие подтверждения
 
         public ActionResult ConfirmBurial(int Id)
         {
-            Deceased choice = null;
-            DeceasedModel model = null;
-            using (DataContext DB = new DataContext())
-            {
-                choice = DB.Deceaseds.Include(c => c.Categories).Include(x => x.BurialPlace).FirstOrDefault(i => i.Id == Id);
-                if (choice == null)
-                    return HttpNotFound("Захоронение не найдено, повторите попытку позже");
-                model = new DeceasedModel(choice);
-            }
-            return View(model);
+            Deceased deceased = deceasedDal.GetDeceased(Id);
+            if (deceased == null)
+                return HttpNotFound();
+            return View(deceased);
         }
 
         [HttpPost]
         public ActionResult ConfirmBurial(Deceased model)
         {
-            Deceased choice = null;
-            using (DataContext DB = new DataContext())
-            {
-                choice = DB.Deceaseds.Include(c => c.Categories).Include(x => x.BurialPlace).FirstOrDefault(i => i.Id == model.Id);
-                if (choice == null)
-                    return HttpNotFound("Захоронение не найдено, повторите попытку позже");
-                choice.Confirmed = true;
-                DB.SaveChanges();
-            }
+            deceasedDal.ConfirmBurial(model.Id);
             return RedirectToAction("UnknownBurials");
+        }
+
+        [HttpGet]
+        public ActionResult UnconfirmBurial(int Id)
+        {
+            deceasedDal.UnConfirmBurial(Id);
+            return RedirectToAction("Search", "Home");
         }
 
         #endregion
@@ -135,13 +138,9 @@ namespace CemeteryNew.Controllers
 
         public ActionResult DeleteBurial(int Id)
         {
-            Deceased choice = null;
-            using (DataContext DB = new DataContext())
-            {
-                choice = DB.Deceaseds.Include(c => c.Categories).Include(x => x.BurialPlace).FirstOrDefault(i => i.Id == Id);
-                if (choice == null)
-                    return HttpNotFound("Захоронение не найдено, повторите попытку позже");
-            }
+            Deceased choice = deceasedDal.GetDeceased(Id);
+            if (choice == null)
+                return HttpNotFound("Захоронение не найдено, повторите попытку позже");
             return View(choice);
         }
 

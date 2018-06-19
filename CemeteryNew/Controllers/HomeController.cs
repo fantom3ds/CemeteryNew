@@ -14,8 +14,16 @@ namespace CemeteryNew.Controllers
     public class HomeController : Controller
     {
         string fileName; // переменная путь файла
-        DeceasedDao deceasedDAO = new DeceasedDao();
-        UserDao userDao = new UserDao();
+        UserDal userDal;
+        DeceasedDal deceasedDal;
+
+        public HomeController()
+        {
+            userDal = new UserDal();
+            deceasedDal = new DeceasedDal();
+        }
+
+        #region Обычные страницы
 
         public ActionResult Index()
         {
@@ -42,6 +50,7 @@ namespace CemeteryNew.Controllers
             return View();
         }
 
+        #endregion
 
         #region Search (бэкап)
 
@@ -59,7 +68,7 @@ namespace CemeteryNew.Controllers
 
         public async Task<ActionResult> Search(string searchString)
         {
-            var deceaseds = deceasedDAO.GetAllDeceased();
+            var deceaseds = deceasedDal.GetAllDeceased();
             if (!String.IsNullOrEmpty(searchString))
             {
                 deceaseds = deceaseds.Where(s => s.LName.Contains(searchString) || s.FName.Contains(searchString) || s.SName.Contains(searchString));
@@ -67,11 +76,17 @@ namespace CemeteryNew.Controllers
             return View(await deceaseds.ToListAsync());
         }
 
+        public ActionResult DeceasedDetails(int Id)
+        {
+            Deceased deceased = deceasedDal.GetDeceased(Id);
+            return View(deceased);
+        }
 
+        #region Личный кабинет
 
         public ActionResult PrivateOffice()
         {
-            User principal = userDao.GetUser(User.Identity.Name, true);
+            User principal = userDal.GetUser(User.Identity.Name, true);
             if (principal == null)
                 return
                     new HttpNotFoundResult("Ошибка входа в личный кабинет, перелогиньтесь и попробуйте снова");
@@ -80,7 +95,7 @@ namespace CemeteryNew.Controllers
 
         public ActionResult EditUser(int Id)
         {
-            User principal = userDao.GetUser(Id);
+            User principal = userDal.GetUser(Id);
             if (principal == null)
                 return
                     new HttpNotFoundResult("Ошибка входа в личный кабинет, перелогиньтесь и попробуйте снова");
@@ -92,26 +107,31 @@ namespace CemeteryNew.Controllers
         [ActionName("EditUser")]
         public ActionResult EditedUser(EditUser edit)
         {
-            User principal = userDao.GetUser(edit.Id);
+            User principal = userDal.GetUser(edit.Id);
             if (principal == null)
                 return
                     new HttpNotFoundResult("Пользователь не найден, перелогиньтесь и попробуйте снова");
 
             principal.Password = EncoderGuid.PasswordToGuid.Get(edit.Password);
-            userDao.EditUser(principal);
-            return RedirectToAction("PrivateOffice","Home");
+            userDal.EditUser(principal);
+            return RedirectToAction("PrivateOffice", "Home");
         }
+
+        #endregion
 
         #region Добавление захоронения (неподтвержденного)
 
         [Authorize]
+        [HttpGet]
         public ActionResult AddDeceased()
         {
+            SelectList items = new SelectList(deceasedDal.GetAllCategories(), "Id", "CategoryName");
+            ViewBag.Categories = items;
             return View();
         }
 
         [HttpPost]//Принимаюший метод
-        public ActionResult AddDeceased(string LastName, string FirstName, string Parcicle, DateTime? DateBirth, DateTime? DateDead, int? NumUch, int? NumMog, string opis, string category, HttpPostedFileBase upload)
+        public ActionResult AddDeceased(string LastName, string FirstName, string Parcicle, DateTime? DateBirth, DateTime? DateDead, string Descript, HttpPostedFileBase upload, int Categ)
         {
             //получаем файл
             if (upload != null)
@@ -124,37 +144,24 @@ namespace CemeteryNew.Controllers
                 fileName = "notphoto.jpg";// Если файл отсутсвует, загрузить картинку, нет фото.
             }
 
-            if (NumMog == null)
-                NumMog = 0;
-            if (NumUch == null)
-                NumUch = 0;
-            //Ищем могилу в базе,если существует - пусть будет она. Если нет - копаем
-            var burplace = deceasedDAO.GetBurial((int)NumUch, (int)NumMog);
-            if (burplace == null)
-                burplace = new BurialPlace { NArea = (int)NumUch, NBurial = (int)NumMog };
+            #region Конструктор
 
-            Category categ = deceasedDAO.GetCategory(category);
-
-            Deceased man = new Deceased // Объявляем класс
+            Deceased man = new Deceased
             {
                 FName = FirstName,
                 LName = LastName,
                 SName = Parcicle,
-
                 DOB = DateBirth,
                 DateDeath = DateDead,
-                // Присобачил метод проверки: если место существует - то хороним
-                // там, или же создаем новое.
-                BurialPlace = burplace,
-                Description = opis,
-                //Надо присобачить выбор из раскрывающегося списка
-                Categories = new List<Category>(),
+                Description = Descript,
                 Photo = "/Content/Images/Photos/" + fileName
             };
-            if (categ != null)
-                man.Categories.Add(categ);
 
-            deceasedDAO.AddDeceased(man);
+            #endregion
+
+
+            deceasedDal.AddDeceased(man, Categ);
+
             return RedirectToAction("Search");//Возврат на страницу
         }
 

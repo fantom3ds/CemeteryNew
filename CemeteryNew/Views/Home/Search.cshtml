@@ -3,23 +3,26 @@
 @if (User.Identity.IsAuthenticated)
 {
     <div class="AddBurial">
-        @Html.ActionLink("Добавить захоронение", "AddDeceased")
+        <input type="button" value="Добавить" onclick="location.href='@Url.Action("AddDeceased", "Home")'" />
         @if (User.IsInRole("admin"))
         {
-            @Html.ActionLink("Перейти к неподтвержденным", "UnknownBurials", "Admin")
+            <input type="button" value="Перейти к неподтвержденным" onclick="location.href='@Url.Action("UnknownBurials", "Admin")'" />
         }
     </div>
 }
 
-    <div class="SearchForm">
-        <form asp-controller="Home" asp-action="Search">
-            <p>
-                Поиск <input type="text" name="SearchString">
-                <input type="submit" value="Найти" />
-            </p>
-        </form>
-    </div>
+<div class="SearchForm">
+    <form asp-controller="Home" asp-action="Search">
+        <p>
+            Поиск <input type="text" name="SearchString">
+            <input type="submit" value="Найти" />
+        </p>
+    </form>
+</div>
 
+<div>
+    <input type="button" value="Перейти к неподтвержденным" onclick="location.href='@Url.Action("UnknownBurials", "Admin")'" />
+</div>
 
 <table class="table">
     <tr>
@@ -27,16 +30,17 @@
         <th>Фамилия</th>
         <th>Имя</th>
         <th>Отчество</th>
-        <th>Дата рождения</th>
-        <th>Дата смерти</th>
-        <th>Номер участка</th>
-        <th>Номер могилы</th>
-        <th>Описание</th>
-        <th>Категория</th>
+        <th>Дата рождения - Дата смерти</th>
+        <th>Место захоронения</th>
+        <th>Категории</th>
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
+        if (!item.Confirmed)
+        { ViewBag.Color = "#FF6347"; }
+        else { ViewBag.Color = "#F2F2F2"; }
+
+        <tr style="background-color:@ViewBag.Color">
             <td>
                 <a href="@item.Photo" target="_blank">
                     <img class="DeceasedPhoto" src="@item.Photo" />
@@ -45,19 +49,20 @@
             <td> @Html.DisplayFor(modelItem => item.LName)</td>
             <td> @Html.DisplayFor(modelItem => item.FName)</td>
             <td> @Html.DisplayFor(modelItem => item.SName)</td>
-            <td> @Html.DisplayFor(modelItem => item.DOB)</td>
-            <td> @Html.DisplayFor(modelItem => item.DateDeath)</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DOB) - @Html.DisplayFor(modelItem => item.DateDeath)
+            </td>
             @if (item.BurialPlace != null)
             {
-                <td>@item.BurialPlace.NArea</td>
-                <td>@item.BurialPlace.NBurial</td>
+                <td>
+                    Номер участка/номер могилы
+                    <p>@item.BurialPlace.NArea / @item.BurialPlace.NBurial</p>
+                </td>
             }
             else
             {
                 <td>Нет данных</td>
-                <td>Нет данных</td>
             }
-            <td>@item.Description</td>
             @if (item.Categories != null)
             {
                 <td>
@@ -71,6 +76,9 @@
             {
                 <td>Нет данных</td>
             }
+            <td>
+                <a href="@Url.Action("DeceasedDetails", "Home",new { Id=item.Id })" title="Подробнее"> <img src="~/Content/Images/Icons/Details.png" style="width:50px" />  </a>
+            </td>
         </tr>
     }
 </table>

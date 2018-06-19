@@ -8,7 +8,7 @@ namespace CemeteryNew.Providers
 {
     public class CustomRoleProvider : RoleProvider
     {
-        UserDao Dao = new UserDao();
+        UserDal Dao = new UserDal();
 
         public override string[] GetRolesForUser(string username)
         {

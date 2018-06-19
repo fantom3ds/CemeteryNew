@@ -54,6 +54,15 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.108.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -116,6 +125,10 @@
     <Content Include="Content\Images\History\Открытие памятника Вавилову.jpg" />
     <Content Include="Content\Images\History\Умер боевой товарищ.jpg" />
     <Content Include="Content\Images\History\Участок воскресенского кладбища.jpg" />
+    <Content Include="Content\Images\Icons\Confirm.png" />
+    <Content Include="Content\Images\Icons\Delete.png" />
+    <Content Include="Content\Images\Icons\Details.png" />
+    <Content Include="Content\Images\Icons\Edit.png" />
     <Content Include="Content\Images\Icons\Main.png" />
     <Content Include="Content\Images\Icons\search.png" />
     <Content Include="Content\Images\Icons\search1.png" />
@@ -153,21 +166,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="DataAccessLayer\DeceasedDao.cs" />
-    <Compile Include="DataAccessLayer\UserDao.cs" />
+    <Compile Include="DataAccessLayer\DeceasedDal.cs" />
+    <Compile Include="DataAccessLayer\UserDal.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201806151846147_Initial.cs" />
-    <Compile Include="Migrations\201806151846147_Initial.Designer.cs">
-      <DependentUpon>201806151846147_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806151856083_EditErrors.cs" />
-    <Compile Include="Migrations\201806151856083_EditErrors.Designer.cs">
-      <DependentUpon>201806151856083_EditErrors.cs</DependentUpon>
+    <Compile Include="Migrations\201806191522163_Initial.cs" />
+    <Compile Include="Migrations\201806191522163_Initial.Designer.cs">
+      <DependentUpon>201806191522163_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BurialPlace.cs" />
@@ -200,10 +210,10 @@
     <Content Include="Views\Admin\EditBurial.cshtml" />
     <Content Include="Views\Admin\ConfirmBurial.cshtml" />
     <Content Include="Views\Admin\DeleteBurial.cshtml" />
-    <Content Include="Views\Home\SearchViewProbes.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\PrivateOffice.cshtml" />
     <Content Include="Views\Home\EditUser.cshtml" />
+    <Content Include="Views\Home\DeceasedDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -212,14 +222,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201806151846147_Initial.resx">
-      <DependentUpon>201806151846147_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806151856083_EditErrors.resx">
-      <DependentUpon>201806151856083_EditErrors.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201806191522163_Initial.resx">
+      <DependentUpon>201806191522163_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -251,7 +257,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

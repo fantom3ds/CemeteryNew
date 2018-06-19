@@ -1,9 +1,6 @@
 ﻿@model CemeteryNew.Models.Deceased
 
-<h2>Вы уверены, что хотите подтвердить данные этого захоронения? </h2>
 <div>
-
-
     <h2>@Model.LName @Model.FName @Model.SName (@Html.DisplayFor(modelItem => Model.DOB) - @Html.DisplayFor(modelItem => Model.DateDeath))</h2>
 
     <img src="@Model.Photo" width="500" />
@@ -11,6 +8,8 @@
     <hr />
 
     <dl class="dl-horizontal">
+
+
         @if (Model.BurialPlace != null)
         {
             <dt>
@@ -66,19 +65,35 @@
                 @item.CategoryName <br />
             }
         </dd>
+
+        <dt>Статус</dt>
+        @if(Model.Confirmed)
+        {
+            <dd>Подтвержденное захоронение</dd>
+        }
+        else
+        {
+            <dd>Неподтвержденное захоронение</dd>
+        }
     </dl>
 </div>
 
 <div>
-    @using (Html.BeginForm())
+    @if (User.IsInRole("admin"))
     {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input class="button" type="submit" value="Удалить" />
-            <input class="button" type="button" value="Отменить" onclick="location.href='@Url.Action("UnknownBurials", "Admin")'" />
-        </div>
+        if (Model.Confirmed)
+        {
+            <p>
+                <input type="button" value="Пометить как неподтвержденного" onclick="location.href='@Url.Action("UnconfirmBurial", "Admin", new { Id = Model.Id })'" />
+                <input type="button" value="Удалить" onclick="location.href='@Url.Action("DeleteBurial", "Admin", new { Id = Model.Id })'" />
+            </p>
+        }
+        else
+        {
+            <p>
+                <input type="button" value="Подтвердить" onclick="location.href='@Url.Action("ConfirmBurial", "Admin", new { Id = Model.Id })'" />
+                <input type="button" value="Удалить" onclick="location.href='@Url.Action("DeleteBurial", "Admin", new { Id = Model.Id })'" />
+            </p>
+        }
     }
 </div>
-
-

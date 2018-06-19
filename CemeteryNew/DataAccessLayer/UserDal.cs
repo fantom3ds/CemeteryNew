@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace CemeteryNew.DataAccessLayer
 {
-    public class UserDao
+    public class UserDal
     {
         DataContext DB = new DataContext();
 

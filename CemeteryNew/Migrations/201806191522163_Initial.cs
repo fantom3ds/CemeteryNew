@@ -31,6 +31,7 @@ namespace CemeteryNew.Migrations
                         Photo = c.String(),
                         Description = c.String(maxLength: 200),
                         Confirmed = c.Boolean(nullable: false),
+                        UnknownBurial = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.BurialPlaces", t => t.BurialPlaseId)
@@ -41,7 +42,7 @@ namespace CemeteryNew.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        CategoryName = c.String(maxLength: 20),
+                        CategoryName = c.String(maxLength: 50),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -50,7 +51,7 @@ namespace CemeteryNew.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        RoleName = c.String(),
+                        Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             

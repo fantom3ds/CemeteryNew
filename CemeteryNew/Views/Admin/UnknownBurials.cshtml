@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<CemeteryNew.Models.Deceased>
 
 <div class="AddBurial">
-    @Html.ActionLink("Добавить захоронение", "AddDeceased", "Home")
-    @Html.ActionLink("Перейти к подтвержденным", "Search", "Home")
+    <input type="button" value="Перейти к подтвержденным" onclick="location.href='@Url.Action("Search", "Home")'" />
 </div>
 
-
+<div>
+    <input class="button" type="button" value="Добавить захоронение" onclick="location.href='@Url.Action("AddDeceased", "Home")'" />
+</div>
 
 <table class="table">
     <tr>
@@ -13,16 +14,18 @@
         <th>Фамилия</th>
         <th>Имя</th>
         <th>Отчество</th>
-        <th>Дата рождения</th>
-        <th>Дата смерти</th>
-        <th>Номер участка</th>
-        <th>Номер могилы</th>
+        <th>Дата рождения / смерти</th>
+        <th>Место захоронения</th>
         <th>Описание</th>
         <th>Категория</th>
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
+        if (!item.Confirmed)
+        { ViewBag.Color = "#FF6347"; }
+        else { ViewBag.Color = "#F2F2F2"; }
+
+        <tr style="background-color:@ViewBag.Color">
             <td>
                 <a href="@item.Photo" target="_blank">
                     <img class="DeceasedPhoto" src="@item.Photo" />
@@ -31,19 +34,21 @@
             <td> @Html.DisplayFor(modelItem => item.LName)</td>
             <td> @Html.DisplayFor(modelItem => item.FName)</td>
             <td> @Html.DisplayFor(modelItem => item.SName)</td>
-            <td> @Html.DisplayFor(modelItem => item.DOB)</td>
-            <td> @Html.DisplayFor(modelItem => item.DateDeath)</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DOB) - @Html.DisplayFor(modelItem => item.DateDeath)
+            </td>
             @if (item.BurialPlace != null)
             {
-                <td>@item.BurialPlace.NArea</td>
-                <td>@item.BurialPlace.NBurial</td>
+                <td>
+                    Номер участка/номер могилы
+                    <p>@item.BurialPlace.NArea / @item.BurialPlace.NBurial</p>
+                </td>
             }
             else
             {
                 <td>Нет данных</td>
-                <td>Нет данных</td>
             }
-            <td>@item.Description</td>
+            <td></td>
             @if (item.Categories != null)
             {
                 <td>
@@ -58,11 +63,11 @@
                 <td>Нет данных</td>
             }
             <td>
-                <input class="Table-button" type="button" value="Подтвердить" onclick="location.href='@Url.Action("ConfirmBurial", "Admin",new { Id=item.Id })'" />
+                <a href="@Url.Action("ConfirmBurial", "Admin",new { Id=item.Id })" title="Подтвердить захоронение"> <img class="Table-button" src="~/Content/Images/Icons/Confirm.png" />  </a>
                 <br />
-                <input class="Table-button" type="button" value="Редактировать" onclick="location.href='@Url.Action("EditBurial", "Admin",new { Id=item.Id })'" />
+                <a href="@Url.Action("EditBurial", "Admin",new { Id=item.Id })" title="Редактировать"> <img class="Table-button" src="~/Content/Images/Icons/Edit.png" />  </a>
                 <br />
-                <input class="Table-button" type="button" value="Удалить" onclick="location.href='@Url.Action("DeleteBurial", "Admin",new { Id=item.Id })'" />
+                <a href="@Url.Action("DeleteBurial", "Admin",new { Id=item.Id })" title="Удалить захоронение"> <img class="Table-button" src="~/Content/Images/Icons/Delete.png" style="border:4px solid black" />  </a>
             </td>
         </tr>
     }
