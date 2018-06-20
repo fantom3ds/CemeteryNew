@@ -11,6 +11,7 @@ namespace CemeteryNew.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            ContextKey = "CemeteryNew.Models.DataContext";
         }
 
         protected override void Seed(CemeteryNew.Models.DataContext DB)

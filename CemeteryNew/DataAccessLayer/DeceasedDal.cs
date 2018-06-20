@@ -58,6 +58,8 @@ namespace CemeteryNew.DataAccessLayer
 
         #endregion
 
+        #region Добавление захоронения
+
         /// <summary>
         /// Добавляет захоронение в список неподтвержденных
         /// </summary>
@@ -79,6 +81,67 @@ namespace CemeteryNew.DataAccessLayer
                 Context.SaveChanges();
             }
         }
+
+        public void AddDeceased(Deceased Add, int[] CategoriesId)
+        {
+            using (DataContext Db = new DataContext())
+            {
+                Add.Categories = new List<Category>();
+                if (CategoriesId != null)
+                {
+                    //получаем выбранные курсы
+                    foreach (var c in Db.Categories.Where(co => CategoriesId.Contains(co.Id)))
+                    {
+                        Add.Categories.Add(c);
+                    }
+                }
+                Db.Deceaseds.Add(Add);
+                Db.SaveChanges();
+            }
+        }
+
+        #endregion
+
+
+        #region Редактирование захоронения
+
+        public void UpdateDeceased(Deceased edited)
+        {
+            Deceased current = null;
+            using (DataContext DB = new DataContext())
+            {
+                current = DB.Deceaseds.Include(b => b.BurialPlace).Include(c => c.Categories).FirstOrDefault(i => i.Id == edited.Id);
+                if (current != null)
+                {
+                    current.LName = edited.LName;
+                    current.FName = edited.FName;
+                    current.SName = edited.SName;
+
+                    current.DOB = edited.DOB;
+                    current.DateDeath = edited.DateDeath;
+
+                    current.Photo = edited.Photo;
+
+                    current.BurialPlace = edited.BurialPlace;
+                    current.Categories = edited.Categories;
+
+                    current.Description = edited.Description;
+
+                    current.Confirmed = edited.Confirmed;
+                    current.UnknownBurial = edited.UnknownBurial;
+
+
+                    DB.SaveChanges();
+                }
+            }
+        }
+
+        #endregion
+
+
+
+
+
 
         #region Возвращаение категорий
 

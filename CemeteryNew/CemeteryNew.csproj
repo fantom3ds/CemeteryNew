@@ -152,6 +152,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\Fonts\FontButton.ttf" />
     <Content Include="Content\Fonts\FontMain.otf" />
+    <Content Include="App_Data\Repository2.db" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -185,6 +186,7 @@
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Models\Deceased.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\SQLiteContext.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\ViewModels\DeceasedModel.cs" />
     <Compile Include="Models\ViewModels\EditUser.cs" />

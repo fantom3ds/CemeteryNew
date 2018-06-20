@@ -6,7 +6,7 @@
 
     <h2>@Model.LName @Model.FName @Model.SName (@Html.DisplayFor(modelItem => Model.DOB) - @Html.DisplayFor(modelItem => Model.DateDeath))</h2>
 
-    <img src="@Model.Photo" width="500" />
+    <img src="@Model.Photo" width="300" />
 
     <hr />
 
@@ -45,7 +45,7 @@
         <dt>
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        @if (Model.Description != "")
+        @if (Model.Description != "" && Model.Description != null)
         {
             <dd>
                 @Model.Description
@@ -57,17 +57,31 @@
                 Нет описания
             </dd>
         }
+
         <dt>
             Категории
         </dt>
-        <dd>
-            @foreach (var item in Model.Categories)
-            {
-                @item.CategoryName <br />
-            }
-        </dd>
+
+        @if (Model.Categories != null && Model.Categories.Count > 0)
+        {
+            <dd>
+                @foreach (var item in Model.Categories)
+                {
+                    <p>item.CategoryName</p> <br />
+                }
+            </dd>
+        }
+        else
+        {
+            <dd>
+                Нет категорий
+            </dd>
+        }
+
     </dl>
 </div>
+
+
 
 <div>
     @using (Html.BeginForm())

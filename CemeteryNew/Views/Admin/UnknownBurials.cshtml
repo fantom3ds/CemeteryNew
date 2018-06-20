@@ -2,10 +2,7 @@
 
 <div class="AddBurial">
     <input type="button" value="Перейти к подтвержденным" onclick="location.href='@Url.Action("Search", "Home")'" />
-</div>
-
-<div>
-    <input class="button" type="button" value="Добавить захоронение" onclick="location.href='@Url.Action("AddDeceased", "Home")'" />
+    <input type="button" value="Добавить захоронение" onclick="location.href='@Url.Action("AddDeceased", "Home")'" />  
 </div>
 
 <table class="table">
@@ -48,7 +45,9 @@
             {
                 <td>Нет данных</td>
             }
-            <td></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
             @if (item.Categories != null)
             {
                 <td>

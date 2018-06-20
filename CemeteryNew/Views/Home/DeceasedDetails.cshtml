@@ -56,18 +56,30 @@
                 Нет описания
             </dd>
         }
+
         <dt>
             Категории
         </dt>
-        <dd>
-            @foreach (var item in Model.Categories)
-            {
-                @item.CategoryName <br />
-            }
-        </dd>
+
+        @if (Model.Categories != null)
+        {
+            <dd>
+                @foreach (var item in Model.Categories)
+                {
+                    @item.CategoryName <br />
+                }
+            </dd>
+        }
+        else
+        {
+            <dd>
+                Нет категорий
+            </dd>
+        }
 
         <dt>Статус</dt>
-        @if(Model.Confirmed)
+
+        @if (Model.Confirmed)
         {
             <dd>Подтвержденное захоронение</dd>
         }

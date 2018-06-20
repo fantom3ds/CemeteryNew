@@ -125,13 +125,14 @@ namespace CemeteryNew.Controllers
         [HttpGet]
         public ActionResult AddDeceased()
         {
-            SelectList items = new SelectList(deceasedDal.GetAllCategories(), "Id", "CategoryName");
-            ViewBag.Categories = items;
+            //SelectList items = new SelectList(deceasedDal.GetAllCategories(), "Id", "CategoryName");
+            //ViewBag.Categories = items;
+            ViewBag.Categories2 = deceasedDal.GetAllCategories();
             return View();
         }
 
         [HttpPost]//Принимаюший метод
-        public ActionResult AddDeceased(string LastName, string FirstName, string Parcicle, DateTime? DateBirth, DateTime? DateDead, string Descript, HttpPostedFileBase upload, int Categ)
+        public ActionResult AddDeceased(string LastName, string FirstName, string Parcicle, DateTime? DateBirth, DateTime? DateDead, string Descript, HttpPostedFileBase upload, int[] selectedCateg)
         {
             //получаем файл
             if (upload != null)
@@ -160,90 +161,10 @@ namespace CemeteryNew.Controllers
             #endregion
 
 
-            deceasedDal.AddDeceased(man, Categ);
+            deceasedDal.AddDeceased(man, selectedCateg);
 
             return RedirectToAction("Search");//Возврат на страницу
         }
-
-        #endregion
-
-
-        ////метод поиска по бд
-        //[HttpGet]
-        //public ActionResult Find(string findtext)
-        //{
-        //    using (DataContext DB = new DataContext())
-        //    {
-        //        var men = from s in DB.Deceaseds//прописываем запрос
-        //                  select s;
-        //        if (!String.IsNullOrEmpty(findtext))
-        //        {
-        //            string s = "ss";
-
-
-        //            men = men.Where(s => s.Search.Contains(findtext)).Include(c => c.Category).Include(a => a.BurialPlace);//Запрос поиска
-        //        }
-        //        return View(men.ToList());// вывод содержимого
-        //    }
-        //}
-
-
-        #region MyRegion1
-
-        //[HttpPost]//Принимаюший метод
-        ////обработка данных страницы
-        //public ActionResult AddDeceased(Deceased model, HttpPostedFileBase upload)
-        //{
-        //    //получаем файл
-        //    if (upload != null)
-        //    {
-        //        fileName = System.IO.Path.GetFileName(upload.FileName);//получам путь файла               
-        //        upload.SaveAs(Server.MapPath("/Content/Images/Photos/" + fileName));// сохраняем файл в папку Files в проекте
-        //    }
-        //    else
-        //    {
-        //        fileName = "notphoto.jpg";// Если файл отсутсвует, загрузить картинку, нет фото.
-        //    }
-
-        //    using (DataContext DB = new DataContext())
-        //    {
-        //        //Ищем могилу в базе,если существует - пусть будет она. Если нет - копаем
-        //        var burplace = DB.BurialPlaces.FirstOrDefault(x => x.NArea == NumUch && x.NBurial == NumMog);
-        //        if (burplace == null)
-        //            burplace = new BurialPlace { NArea = NumUch, NBurial = NumMog };
-
-        //        Category categ = DB.Categories.FirstOrDefault(d => d.CategoryName == category);
-
-
-        //        Deceased man;
-        //        DateTime Birth;
-        //        DateTime Dead;
-        //        if (DateTime.TryParse(DateBith, out Birth) && DateTime.TryParse(DateDead, out Dead))
-        //        {
-
-        //        }
-
-        //        man = new Deceased // Объявляем класс
-        //        {
-        //            FName = FirstName,
-        //            LName = LastName,
-        //            SName = Parcicle,
-
-        //            DOB = Birth,
-        //            //DateDeath = Dead,
-        //            // Присобачил метод проверки: если место существует - то хороним
-        //            // там, или же создаем новое.
-        //            BurialPlace = burplace,
-        //            Description = opis,
-        //            //Надо присобачить выбор из раскрывающегося списка
-        //            Category = categ,
-        //            Photo = "/Content/Images/Photos/" + fileName
-        //        };
-        //        DB.Deceaseds.Add(man);//Запись в бд
-        //        DB.SaveChanges();//Сохранение
-        //    }
-        //    return RedirectToAction("Search");//Возврат на страницу
-        //}
 
         #endregion
     }

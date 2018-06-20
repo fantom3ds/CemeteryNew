@@ -1,5 +1,7 @@
 ﻿@model CemeteryNew.Models.Deceased
 
+@using CemeteryNew.Models
+
 @{
     ViewBag.Title = "AddDeceased";
 }
@@ -32,15 +34,24 @@
         <br />
 
         <div>
-            <label>Категория</label>
-            @Html.DropDownList("Categ", ViewBag.Categories as SelectList, new { @class = "DropList" })
+            <label>Категории</label>
         </div>
+        <div>
+            @foreach (Category c in ViewBag.Categories2)
+            {
+                <div>
+                    <input type="checkbox" name="selectedCateg" value=" @c.Id " /> <label>@c.CategoryName</label>
+                </div>
+            }
+        </div>
+
         <br />
 
         <div>
             <label>Загрузка фото</label>
             <input type="file" name="upload" style="display:block; margin-top:10px" />
         </div>
+
+        <input class="button" type="submit" value="Добавить" />
     }
 </div>
-<input class="button" type="submit" value="Добавить" />

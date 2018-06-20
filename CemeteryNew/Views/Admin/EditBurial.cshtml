@@ -1,95 +1,115 @@
-﻿@model CemeteryNew.Models.ViewModels.DeceasedModel
+﻿@model CemeteryNew.Models.Deceased
+@using CemeteryNew.Models
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="EditForm">
-    <h4>@Model.LName @Model.FName @Model.SName (@Html.DisplayFor(modelItem => Model.DOB) - @Html.DisplayFor(modelItem => Model.DateDeath))</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
-        <p>(Оставьте поле пустым, если не хотите менять фотографию)</p>
-        <div class="col-md-10">
-            <a href="@Model.Photo" target="_blank">
-                <img class="DeceasedPhoto" src="@Model.Photo" />
-            </a>
-        </div>
-        <div class="col-md-10">
-            <input type="file" name="upload" value="@Model.Photo" />
-            <br>
-        </div>
-    </div>
+    <div class="EditForm">
+        <h4>@Model.LName @Model.FName @Model.SName (@Html.DisplayFor(modelItem => Model.DOB) - @Html.DisplayFor(modelItem => Model.DateDeath))</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
 
-    <hr />
-    <div class="form-group-Name">
-        @Html.LabelFor(model => model.LName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.LName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.LName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group-Name">
-        @Html.LabelFor(model => model.FName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.FName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group-Name">
-        @Html.LabelFor(model => model.SName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.SName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DateDeath, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DateDeath, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DateDeath, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    @*<div class="form-group">
-            @Html.LabelFor(model => model.NBur, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <p>(Оставьте поле пустым, если не хотите менять фотографию)</p>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NBur, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NBur, "", new { @class = "text-danger" })
+                <a href="@Model.Photo" target="_blank">
+                    <img class="DeceasedPhoto" src="@Model.Photo" />
+                </a>
+            </div>
+            <div class="col-md-10">
+                <input type="file" name="upload" value="@Model.Photo" />
+                <br>
+            </div>
+        </div>
+
+        <hr />
+        <div class="form-group-Name">
+            @Html.LabelFor(model => model.LName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group-Name">
+            @Html.LabelFor(model => model.FName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group-Name">
+            @Html.LabelFor(model => model.SName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.NArea, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NArea, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NArea, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
             </div>
-        </div>*@
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    @*<div class="form-group">
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateDeath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateDeath, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DateDeath, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        @if (Model.BurialPlace != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.BurialPlace.NArea, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayNameFor(model => model.BurialPlace.NArea)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BurialPlace.NBurial, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayNameFor(model => model.BurialPlace.NBurial)
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.BurialPlace.NArea, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    Нет данных
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BurialPlace.NBurial, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    Нет данных
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Confirmed, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
@@ -97,16 +117,16 @@
                     @Html.ValidationMessageFor(model => model.Confirmed, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>*@
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input class="button" type="submit" value="Сохранить изменения"/>
-            <input class="button" type="button" value="Отменить" onclick="location.href='@Url.Action("UnknownBurials", "Admin")'" />
         </div>
 
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input class="button" type="submit" value="Сохранить изменения" />
+                <input class="button" type="button" value="Отменить" onclick="location.href='@Url.Action("UnknownBurials", "Admin")'" />
+            </div>
+
+        </div>
     </div>
-</div>
 }
 
 
